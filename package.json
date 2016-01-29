@@ -12,17 +12,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eduardoboucas/dadi-passport.git"
+    "url": "git+https://github.com/dadi/passport.git"
   },
   "keywords": [
     "dadi",
     "oauth",
     "token"
   ],
-  "author": "Eduardo Boucas <mail@eduardoboucas.com> (https://eduardoboucas.com/)",
-  "license": "MIT",
+  "author": "DADI <team@dadi.tech>",
+  "license": "SEE LICENSE IN GPL.md",
   "bugs": {
-    "url": "https://github.com/eduardoboucas/dadi-passport/issues"
+    "url": "https://github.com/dadi/passport/issues"
   },
-  "homepage": "https://github.com/eduardoboucas/dadi-passport#readme"
+  "homepage": "https://github.com/dadi/passport"
 }
