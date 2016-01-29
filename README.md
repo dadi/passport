@@ -1,80 +1,49 @@
 # DADI Passport
 
-> A promise-based library for generating access tokens to authenticate with DADI platform components.
+![Build Status](http://img.shields.io/badge/Release-0.1_Beta-green.svg?style=flat-square)&nbsp;![Coverage](https://img.shields.io/badge/Coverage-0%-yellow.svg?style=flat-square)
 
-## Introduction
+## Overview
 
-The various components of the API-first development stack DADI implement a form of 2-legged oAuth2, requiring a bearer token to authorise requests. This bearer token is obtained as a response sent to a specific endpoint with a client id/secret pair, along with a TTL defined by the provider.
+DADI Passport is a promise-based library for generating access tokens to authenticate with DADI platform components.
 
-This library can be used by third-party applications that wish to integrate with the DADI platform, as it abstracts the oAuth protocol by storing and requesting bearer tokens as needed, and returning always a promise with a valid bearer token.
+Various components within the DADI stack implement 2-legged oAuth2, requiring a bearer token to authorise requests. This bearer token is obtained as a response sent to a specific endpoint with a clientId/secret pair, along with a TTL defined by the provider.
 
-## Token wallets
+This library can be used by third-party applications that wish to integrate with DADI, as it abstracts the oAuth protocol by storing and requesting bearer tokens as needed, and returning always a promise with a valid bearer token.
 
-On every call, the library will determine whether a new bearer token is required or if there is one in storage that is still valid. To do this, it needs a method of persisting information about a token and its lifespan — a token wallet.
+## Documentation
 
-The library ships with a flat file token wallet, but it can be extended to use any type of storage, such as Redis or MongoDB. A wallet simply needs to implement the methods `read()` and `write()`, to access the last token saved and to store a new one, respectively.
+Documentation is maintained under the `docs` branch and can be found on the [dadi.tech](https://dadi.tech) site.
 
-If no token wallet is specified, a new bearer token will be requested on every call, which is highly discouraged and should only be used for development and testing purposes.
+## Licence
 
-## Usage examples
+DADI is a data centric development and delivery stack, built specifically in support of the principles of API first and COPE.
 
-*Single client/secret pair using a flat file wallet:*
-```js
-var passport = require('dadi-passport')({
-	uri: 'http://my-api.dadi.tech',
-	credentials: {
-		clientId: 'johndoe',
-		secret: 'f00b4r'		
-	},
-	wallet: require('./wallets/file'),
-	walletOptions: {
-		path: './token.txt'
-	}
-});
+Copyright notice<br />
+(C) 2016 DADI+ Limited <support@dadi.tech><br />
+All rights reserved
 
-passport.then(function (bearerToken) {
-    // Authorised request goes here...
-});
-```
+This product is part of DADI.<br />
+DADI is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as
+published by the Free Software Foundation; either version 2 of
+the License, or (at your option) any later version ("the GPL").
+**If you wish to use DADI outside the scope of the GPL, please
+contact us at info@dadi.co for details of alternative licence
+arrangements.**
 
-*Multiple client/secret pairs and different wallets:*
+**This product may be distributed alongside other components
+available under different licences (which may not be GPL). See
+those components themselves, or the documentation accompanying
+them, to determine what licences are applicable.**
 
-```js
-var passport = require('dadi-passport');
+DADI is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-var componentOne = {
-    uri: 'http://my-component1.dadi.tech',
-    credentials: {
-        clientId: 'johndoe',
-        secret: 'f00b4r'
-    },
-    wallet: require('./wallets/mongodb'),
-    walletOptions: {
-        host: 'localhost',
-        port: 27017,
-        username: 'johndoe',
-        password: 'f00b4r',
-        database: 'tokens'
-    }
-};
+The GNU General Public License (GPL) is available at
+http://www.gnu.org/copyleft/gpl.html.<br />
+A copy can be found in the file GPL distributed with
+these files.
 
-var componentTwo = {
-    uri: 'http://my-component2.dadi.tech',
-    credentials: {
-        clientId: 'janedoe',
-        secret: 'f00b4z'
-    },
-    wallet: require('./wallets/file'),
-    walletOptions: {
-        path: './token'
-    }
-};
-
-passport(componentOne).then(function (bearerToken) {
-    // Request for component 1 goes here...
-});
-
-passport(componentTwo).then(function (bearerToken) {
-    // Request for component 2 goes here...
-});
-```
+This copyright notice MUST APPEAR in all copies of the product!
