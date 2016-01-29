@@ -15,7 +15,7 @@ This library can be used by third-party applications that wish to integrate with
 * Overview (this document)
 * [Requirements](https://github.com/dadi/passport/blob/docs/docs/requirements.md)
 * [Token wallets](https://github.com/dadi/passport/blob/docs/docs/tokenWallets.md)
-* [Usage examples](https://github.com/dadi/passport/blob/docs/docs/tokenWallets.md)
+* [Usage examples](https://github.com/dadi/passport/blob/docs/docs/usageExamples.md)
 * [Development](https://github.com/dadi/passport/blob/docs/docs/development.md)
 * [License](https://github.com/dadi/passport/blob/docs/docs/license.md)
 * [GPL](https://github.com/dadi/passport/blob/docs/docs/gpl.md)
