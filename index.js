@@ -1,11 +1,23 @@
 var request = require('request-promise');
 
 module.exports = (function (data) {
-  if (!data.wallet || (data.wallet === 'none')) {
+  var walletModule;
+
+  if (!data.wallet) {
     return requestNewToken();
   }
 
-  var Wallet = data.wallet;
+  if (typeof data.wallet === 'string') {
+    if (data.wallet === 'none') {
+      return requestNewToken();
+    } else {
+      walletModule = require(__dirname + '/wallets/' + data.wallet);
+    }
+  } else {
+    walletModule = data.wallet;
+  }
+
+  var Wallet = walletModule;
   var wallet = new Wallet(data.walletOptions);
 
   var requestNewToken = function () {
