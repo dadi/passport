@@ -2,11 +2,21 @@ var request = require('request-promise');
 
 module.exports = (function (data) {
   var walletModule;
+  var requestNewToken = function () {
+    return request({
+      json: true,
+      method: 'POST',
+      uri: data.uri + '/token',
+      body: data.credentials
+    }).then(function (response) {
+      if (wallet) {
+        wallet.write(response);  
+      }
 
-  if (!data.wallet) {
-    return requestNewToken();
-  }
-
+      return Promise.resolve(response.accessToken);
+    });
+  };
+  
   if (typeof data.wallet === 'string') {
     if (data.wallet === 'none') {
       return requestNewToken();
@@ -17,21 +27,12 @@ module.exports = (function (data) {
     walletModule = data.wallet;
   }
 
+  if (!walletModule) {
+    return requestNewToken();
+  }
+
   var Wallet = walletModule;
   var wallet = new Wallet(data.walletOptions);
-
-  var requestNewToken = function () {
-    return request({
-      json: true,
-      method: 'POST',
-      uri: data.uri + '/token',
-      body: data.credentials
-    }).then(function (response) {
-      wallet.write(response);
-
-      return Promise.resolve(response.accessToken);
-    });
-  };
 
   try {
     var token = wallet.read();
