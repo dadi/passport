@@ -1,13 +1,7 @@
 var request = require('request-promise');
 
 module.exports = (function (data) {
-  if (!data.wallet || (data.wallet === 'none')) {
-    return requestNewToken();
-  }
-
-  var Wallet = data.wallet;
-  var wallet = new Wallet(data.walletOptions);
-
+  var walletModule;
   var requestNewToken = function () {
     return request({
       json: true,
@@ -15,11 +9,30 @@ module.exports = (function (data) {
       uri: data.uri + '/token',
       body: data.credentials
     }).then(function (response) {
-      wallet.write(response);
+      if (wallet) {
+        wallet.write(response);  
+      }
 
       return Promise.resolve(response.accessToken);
     });
   };
+  
+  if (typeof data.wallet === 'string') {
+    if (data.wallet === 'none') {
+      return requestNewToken();
+    } else {
+      walletModule = require(__dirname + '/wallets/' + data.wallet);
+    }
+  } else {
+    walletModule = data.wallet;
+  }
+
+  if (!walletModule) {
+    return requestNewToken();
+  }
+
+  var Wallet = walletModule;
+  var wallet = new Wallet(data.walletOptions);
 
   try {
     var token = wallet.read();
