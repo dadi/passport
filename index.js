@@ -34,7 +34,7 @@ module.exports = (function (data, requestAgent) {
 
         if (typeof arguments[0] === 'string') {
           // The first pararameter is a URL string
-          requestOptions.url = arguments[0];
+          requestOptions.uri = arguments[0];
           requestOptions.headers = {
             'Authorization': 'Bearer ' + token
           }
