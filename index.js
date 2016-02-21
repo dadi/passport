@@ -24,6 +24,8 @@ module.exports = (function (data, requestAgent) {
       }
 
       return Promise.resolve(this.return(response.accessToken));
+    }).bind(this)).catch((function (errorData) {
+      return Promise.reject(this.createErrorObject(errorData));
     }).bind(this));
   };
 
@@ -80,6 +82,30 @@ module.exports = (function (data, requestAgent) {
     } catch (e) {
       return this.requestToken();
     }
+  };
+
+  Passport.prototype.createErrorObject = function (errorData) {
+    var error = {};
+
+    switch (errorData.statusCode) {
+      case 401:
+        error.status = 'Unauthorized';
+        error.title = 'Credentials not found or invalid';
+        error.detail = 'The authorization process failed for the clientId/secret pair provided';
+        error.code = '';
+
+        break;
+
+      case 404:
+        error.status = 'Not found';
+        error.title = 'URL not found';
+        error.detail = 'The request for URL \'' + errorData.options.uri + '\' returned a 404.';
+        error.code = '';
+
+        break;
+    }
+
+    return error;
   };
 
   var passport = new Passport(data, requestAgent);
