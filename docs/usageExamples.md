@@ -2,6 +2,8 @@
 
 ## Usage examples
 
+Passport will return different things based on the arity of its require call. If there is only one argument, the return value will be a Promise containing a string with a bearer token.
+
 *Single client/secret pair using a flat file wallet:*
 
 ```js
@@ -11,7 +13,7 @@ var passport = require('dadi-passport')({
 		clientId: 'johndoe',
 		secret: 'f00b4r'		
 	},
-	wallet: require('./wallets/file'),
+	wallet: 'file',
 	walletOptions: {
 		path: './token.txt'
 	}
@@ -33,7 +35,7 @@ var componentOne = {
         clientId: 'johndoe',
         secret: 'f00b4r'
     },
-    wallet: require('./wallets/mongodb'),
+    wallet: 'mongodb', // Illustrative purposes
     walletOptions: {
         host: 'localhost',
         port: 27017,
@@ -61,5 +63,32 @@ passport(componentOne).then(function (bearerToken) {
 
 passport(componentTwo).then(function (bearerToken) {
     // Request for component 2 goes here...
+});
+```
+
+If a function is passed as a second argument, Passport will interpret it as a module capable of performing a request (such as [request](https://www.npmjs.com/package/request) or [request-promise](https://www.npmjs.com/package/request)) and will inject the bearer token in the authorisation header, returning a Promise containing the patched request agent.
+
+*Using request injection option:*
+
+```js
+var request = require('request-promise');
+var passport = require('dadi-passport')({
+    uri: 'http://my-api.dadi.tech',
+    credentials: {
+        clientId: 'johndoe',
+        secret: 'f00b4r'
+    },
+    wallet: 'file',
+    walletOptions: {
+        path: './token.txt'
+    }
+}, request); // <--- passing the request module as 2nd argument
+
+// The Promise now returns a request object with the authorisation headers injected,
+// instead of the bearer token
+passport.then(function (request) {
+    request('http://my-api.dadi.tech/v1/some/endpoint').then(function (response) {
+        // Do something
+    });
 });
 ```
