@@ -13,11 +13,23 @@ module.exports = (function (data, requestAgent) {
   };
 
   Passport.prototype.requestToken = function () {
+    var uri = this.data.issuer.uri;
+
+    if (this.data.issuer.port) {
+      uri += ':' + this.data.issuer.port;
+    }
+
+    if (this.data.issuer.endpoint) {
+      uri += this.data.issuer.endpoint;
+    } else {
+      uri += '/token';
+    }
+
     return request({
       json: true,
       method: 'POST',
-      uri: data.uri + '/token',
-      body: data.credentials
+      uri: uri,
+      body: this.data.credentials
     }).then((function (response) {
       if (this.wallet) {
         this.wallet.write(response);
