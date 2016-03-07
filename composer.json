@@ -1,0 +1,27 @@
+{
+    "name": "dadi/passport",
+    "version": "0.1.0",
+    "type": "library",
+    "description": "A library for generating access tokens to authenticate with DADI platform components",
+    "require": {
+        "php": ">=4.0.2"
+    },
+    "homepage": "https://github.com/dadi/passport",
+    "keywords": [
+    	"api",
+    	"oauth",
+    	"dadi"
+    ],
+    "autoload": {
+        "psr-4": {
+            "DADI\\Passport\\": "php/src"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+    	{
+    		"name": "DADI+ Limited",
+    		"email": "support@dadi.tech"
+    	}
+    ]
+}
