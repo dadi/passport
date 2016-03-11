@@ -1,8 +1,10 @@
 <?php
 
-class DadiPassportFileWallet {
-	function __construct($path) {
-		$this->path = $path;
+namespace dadi;
+
+class PassportFileWallet {
+	function __construct($options) {
+		$this->path = $options['path'];
 	}
 
 	/**
