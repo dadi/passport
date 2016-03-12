@@ -4,12 +4,11 @@
     "type": "library",
     "description": "A library for generating access tokens to authenticate with DADI platform components",
     "require": {
-        "php": ">=4.0.2",
-        "slim/slim": "^3.0"
+        "php": ">=4.0.2"
     },
     "require-dev": {
-        "guzzlehttp/guzzle": "~6.0",
-        "phpunit/phpunit": "5.0.*"
+        "phpunit/phpunit": "5.0.*",
+        "slim/slim": "^3.0"
     },
     "scripts": {
         "test": "./vendor/bin/phpunit ./php/tests/PassportTest -c php/phpunit.xml --verbose"
