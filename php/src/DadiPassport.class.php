@@ -102,6 +102,12 @@ class Passport {
 
 		$response = json_decode(curl_exec($request));
 
+		$statusCode = curl_getinfo($request, CURLINFO_HTTP_CODE);
+
+		if ($statusCode !== 200) {
+			throw new \Exception('Credentials are incorrect');
+		}
+
 		if ($wallet) {
 			$wallet->write($response);	
 		}
@@ -129,7 +135,7 @@ class Passport {
 		$walletContents = $wallet ? $wallet->read() : null;
 
 		if (($walletContents) && ($walletContents->expirationDate > time())) {
-			return $walletContents->accessToken;
+			return $requestAgent ? self::getRequestAgent($requestAgent, $walletContents->accessToken) : $walletContents->accessToken;
 		}
 
 		$bearerToken = self::requestToken($options['issuer'], $options['credentials'], $wallet);
