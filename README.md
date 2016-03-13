@@ -30,3 +30,4 @@ This library can be used by third-party applications that wish to integrate with
 * [Requirements](docs/php/requirements.md)
 * [Installation](docs/php/installation.md)
 * [Usage examples](docs/php/usageExamples.md)
+* [Testing](docs/php/testing.md)
