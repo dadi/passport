@@ -4,13 +4,13 @@
 
 ### Installation
 
-1. Install with NPM:
+1. Install with [npm](https://www.npmjs.com/:
 
 	```
 	npm install
 	```
 
-1. Include with `require`:
+2. Include with `require`:
 	
 	```js
 	var passport = require('dadi-passport')({

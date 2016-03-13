@@ -4,7 +4,7 @@
 
 ### Installation
 
-1. Install with [Composer](https://getcomposer.org/:
+1. Install with [Composer](https://getcomposer.org/):
 
 	```
 	composer require dadi/passport:dev-master
@@ -18,7 +18,7 @@
 	}
 	```
 
-1. Require via autoloading:
+2. Require via autoloading:
 	
 	```php
 	require 'vendor/autoload.php';
