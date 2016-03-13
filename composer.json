@@ -21,7 +21,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "dadi\\Passport\\": "php/src"
+            "dadi\\": "php/src"
         }
     },
     "license": "MIT",
