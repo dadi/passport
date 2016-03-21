@@ -4,7 +4,7 @@
 
 ## Overview
 
-DADI Passport is a promise-based library for generating access tokens to authenticate with DADI platform components.
+DADI Passport is a library for generating access tokens to authenticate with DADI platform components.
 
 Various components within the DADI stack implement 2-legged oAuth2, requiring a bearer token to authorise requests. This bearer token is obtained as a response sent to a specific endpoint with a clientId/secret pair, along with a TTL defined by the provider.
 
@@ -12,10 +12,22 @@ This library can be used by third-party applications that wish to integrate with
 
 ## Contents
 
-* Overview (this document)
-* [Requirements](https://github.com/dadi/passport/blob/docs/docs/requirements.md)
-* [Token wallets](https://github.com/dadi/passport/blob/docs/docs/tokenWallets.md)
-* [Usage examples](https://github.com/dadi/passport/blob/docs/docs/usageExamples.md)
-* [Development](https://github.com/dadi/passport/blob/docs/docs/development.md)
-* [License](https://github.com/dadi/passport/blob/docs/docs/license.md)
-* [GPL](https://github.com/dadi/passport/blob/docs/docs/gpl.md)
+### Overview
+
+* [Token wallets](docs/tokenWallets.md)
+* [Development](docs/development.md)
+* [License](docs/license.md)
+* [GPL](docs/gpl.md)
+
+### Node.js
+
+* [Requirements](docs/node/requirements.md)
+* [Installation](docs/node/installation.md)
+* [Usage examples](docs/node/usageExamples.md)
+
+### PHP
+
+* [Requirements](docs/php/requirements.md)
+* [Installation](docs/php/installation.md)
+* [Usage examples](docs/php/usageExamples.md)
+* [Testing](docs/php/testing.md)

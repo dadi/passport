@@ -1,6 +1,8 @@
 # DADI Passport
 
-## Usage examples
+## Node.js
+
+### Usage examples
 
 Passport will return different things based on the arity of its require call. If there is only one argument, the return value will be a Promise containing a string with a bearer token.
 
