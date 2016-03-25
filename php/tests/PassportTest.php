@@ -1,8 +1,8 @@
 <?php
 
 require dirname(__FILE__) . '/../../vendor/autoload.php';
-require_once dirname(__FILE__) . '/../src/DadiPassport.class.php';
-require_once dirname(__FILE__) . '/../src/DadiPassportFileWallet.class.php';
+require_once dirname(__FILE__) . '/../src/Passport.php';
+require_once dirname(__FILE__) . '/../src/PassportFileWallet.php';
 
 class PassportTest extends PHPUnit_Framework_TestCase {
 	private static $testServerHost = 'http://localhost';
