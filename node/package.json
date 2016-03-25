@@ -7,9 +7,16 @@
   "dependencies": {
     "request-promise": "^2.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "body-parser": "^1.15.0",
+    "env-test": "^1.0.0",
+    "express": "^4.13.4",
+    "mocha": "latest",
+    "request": "^2.69.0",
+    "should": "latest"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
