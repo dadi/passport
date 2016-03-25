@@ -34,7 +34,7 @@ function deleteWallet() {
 // Tests
 // --------------------------------------------------------------
 
-describe('Authentication', function (done) {
+describe('Generating tokens', function (done) {
 
   before(function (done) {
     startServer();
@@ -277,8 +277,7 @@ describe('Request injection', function (done) {
       accessToken: '1111-2222-3333',
       expiresIn: 5,
       clientId: 'johndoe',
-      secret: 'f00b4r',
-      endpointResponse: 'Hello world'
+      secret: 'f00b4r'
     };
 
     server.useSettings(settings);
