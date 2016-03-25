@@ -87,7 +87,7 @@ describe('Generating tokens', function (done) {
     });
   });
 
-  it('should return an error object when using valid credentials', function (done) {
+  it('should return an error object when using invalid credentials', function (done) {
     var settings = {
       accessToken: '1111-2222-3333',
       expiresIn: 5,
@@ -113,8 +113,32 @@ describe('Generating tokens', function (done) {
       }
     }).catch(function (err) {
       err.status.should.equal('Unauthorized');
-      err.title.should.equal('Credentials not found or invalid')
-      err.detail.should.equal('The authorization process failed for the clientId/secret pair provided');
+      err.title.should.equal('Credentials not found or invalid');
+      err.code.should.equal(401);
+
+      done();
+    });
+  });
+
+  it('should return an error object when requesting from an invalid issuer', function (done) {
+    Passport({
+      issuer: {
+        uri: 'http://lolcathost',
+        port: serverPort,
+        endpoint: '/token'
+      },
+      credentials: {
+        clientId: 'someClient',
+        secret: 'someSecret'
+      },
+      wallet: 'file',
+      walletOptions: {
+        path: tokenWalletPath
+      }
+    }).catch(function (err) {
+      err.status.should.equal('Not found');
+      err.title.should.equal('URL not found');
+      err.code.should.equal(404);
 
       done();
     });
