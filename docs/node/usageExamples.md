@@ -10,7 +10,11 @@ Passport will return different things based on the arity of its require call. If
 
 ```js
 var passport = require('dadi-passport')({
-	uri: 'http://my-api.dadi.tech',
+	issuer: {
+        uri: 'http://my-api.dadi.tech',
+        port: 80, // Optional. Defaults to 80
+        endpoint: '/token' // Optional. Defaults to '/token'
+    },
 	credentials: {
 		clientId: 'johndoe',
 		secret: 'f00b4r'		
@@ -32,7 +36,11 @@ passport.then(function (bearerToken) {
 var passport = require('dadi-passport');
 
 var componentOne = {
-    uri: 'http://my-component1.dadi.tech',
+    issuer: {
+        uri: 'http://my-component1.dadi.tech',
+        port: 80,
+        endpoint: '/token'
+    },
     credentials: {
         clientId: 'johndoe',
         secret: 'f00b4r'
@@ -48,7 +56,11 @@ var componentOne = {
 };
 
 var componentTwo = {
-    uri: 'http://my-component2.dadi.tech',
+    issuer: {
+        uri: 'http://my-component2.dadi.tech',
+        port: 80,
+        endpoint: '/token'
+    },
     credentials: {
         clientId: 'janedoe',
         secret: 'f00b4z'
@@ -75,7 +87,11 @@ If a function is passed as a second argument, Passport will interpret it as a mo
 ```js
 var request = require('request-promise');
 var passport = require('dadi-passport')({
-    uri: 'http://my-api.dadi.tech',
+    issuer: {
+        uri: 'http://my-api.dadi.tech',
+        port: 80,
+        endpoint: '/token'
+    },
     credentials: {
         clientId: 'johndoe',
         secret: 'f00b4r'
