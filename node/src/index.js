@@ -42,13 +42,14 @@ module.exports = (function (data, requestAgent) {
   };
 
   Passport.prototype.return = function (token) {
-    if (this.requestAgent) {
-      return function () {
+    if (typeof this.requestAgent === 'function') {
+      return (function () {
         var requestOptions = {};
 
         if (typeof arguments[0] === 'string') {
           // The first pararameter is a URL string
           requestOptions.uri = arguments[0];
+          requestOptions.url = arguments[0];
           requestOptions.headers = {
             'Authorization': 'Bearer ' + token
           }
@@ -67,8 +68,8 @@ module.exports = (function (data, requestAgent) {
 
         arguments[0] = requestOptions;
 
-        return requestAgent.apply(this, arguments);
-      };
+        return this.requestAgent.apply(this, arguments);
+      }).bind(this);
     } else {
       return token;
     }
