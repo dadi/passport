@@ -34,7 +34,7 @@ module.exports.useSettings = function (newSettings) {
 
   clearTimeout(ttlTimeout);
 
-  setTimeout(function () {
+  ttlTimeout = setTimeout(function () {
     settings.accessToken = settings.nextAccessToken;
   }, settings.expiresIn * 1000);
 };
