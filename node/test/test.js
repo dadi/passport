@@ -17,9 +17,7 @@ var tokenWalletPath = __dirname + '/token.json';
 // --------------------------------------------------------------
 
 function startServer() {
-  serverInstance = server.listen(serverPort, function () {
-    console.log('Listening...');
-  });
+  serverInstance = server.listen(serverPort);
 }
 
 function stopServer() {
