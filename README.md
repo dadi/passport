@@ -24,6 +24,7 @@ This library can be used by third-party applications that wish to integrate with
 * [Requirements](docs/node/requirements.md)
 * [Installation](docs/node/installation.md)
 * [Usage examples](docs/node/usageExamples.md)
+* [Testing](docs/node/testing.md)
 
 ### PHP
 
