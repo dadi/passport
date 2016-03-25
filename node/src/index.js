@@ -99,22 +99,16 @@ module.exports = (function (data, requestAgent) {
   Passport.prototype.createErrorObject = function (errorData) {
     var error = {};
 
-    switch (errorData.statusCode) {
-      case 401:
-        error.status = 'Unauthorized';
-        error.title = 'Credentials not found or invalid';
-        error.detail = 'The authorization process failed for the clientId/secret pair provided';
-        error.code = '';
-
-        break;
-
-      case 404:
-        error.status = 'Not found';
-        error.title = 'URL not found';
-        error.detail = 'The request for URL \'' + errorData.options.uri + '\' returned a 404.';
-        error.code = '';
-
-        break;
+    if (errorData.statusCode === 401) {
+      error.status = 'Unauthorized';
+      error.title = 'Credentials not found or invalid';
+      error.detail = 'The authorization process failed for the clientId/secret pair provided';
+      error.code = 401;
+    } else {
+      error.status = 'Not found';
+      error.title = 'URL not found';
+      error.detail = 'The request for URL \'' + errorData.options.uri + '\' returned a 404.';
+      error.code = 404;
     }
 
     return error;
