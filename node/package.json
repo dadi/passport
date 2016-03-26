@@ -1,5 +1,5 @@
 {
-  "name": "dadi-passport",
+  "name": "@dadi/passport",
   "version": "1.0.0",
   "description": "A promise-based library for generating access tokens to authenticate with DADI platform components",
   "main": "node/src/index.js",
