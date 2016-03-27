@@ -13,7 +13,7 @@
 2. Include with `require`:
 	
 	```js
-	var passport = require('dadi-passport')({
+	var passport = require('@dadi/passport')({
 		uri: 'http://my-api.dadi.tech',
 		credentials: {
 			clientId: 'johndoe',
