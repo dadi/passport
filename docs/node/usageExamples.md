@@ -9,7 +9,7 @@ Passport will return different things based on the arity of its require call. If
 *Single client/secret pair using a flat file wallet:*
 
 ```js
-var passport = require('dadi-passport')({
+var passport = require('@dadi/passport')({
 	uri: 'http://my-api.dadi.tech',
 	credentials: {
 		clientId: 'johndoe',
@@ -29,7 +29,7 @@ passport.then(function (bearerToken) {
 *Multiple client/secret pairs and different wallets:*
 
 ```js
-var passport = require('dadi-passport');
+var passport = require('@dadi/passport');
 
 var componentOne = {
     uri: 'http://my-component1.dadi.tech',
@@ -74,7 +74,7 @@ If a function is passed as a second argument, Passport will interpret it as a mo
 
 ```js
 var request = require('request-promise');
-var passport = require('dadi-passport')({
+var passport = require('@dadi/passport')({
     uri: 'http://my-api.dadi.tech',
     credentials: {
         clientId: 'johndoe',
