@@ -36,8 +36,10 @@ module.exports = (function (data, requestAgent) {
 
   Passport.prototype.fetchTokenHTTP2 = function (uri) {
     var payload = JSON.stringify(this.data.credentials);
+    var host = (this.data.issuer.uri.indexOf('https://') === 0) ? this.data.issuer.uri.substring(8) : this.data.issuer.uri;
+
     var options = {
-      host: this.data.issuer.uri,
+      host: host,
       port: this.data.issuer.port || 443,
       path: this.data.issuer.endpoint || '/token',
       method: 'POST',
