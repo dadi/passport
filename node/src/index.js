@@ -1,3 +1,4 @@
+var http2 = require('http2');
 var request = require('request-promise');
 
 module.exports = (function (data, requestAgent) {
@@ -12,7 +13,7 @@ module.exports = (function (data, requestAgent) {
     }
   };
 
-  Passport.prototype.requestToken = function () {
+  Passport.prototype.fetchTokenHTTP1 = function () {
     var uri = this.data.issuer.uri;
 
     if (this.data.issuer.port) {
@@ -30,7 +31,56 @@ module.exports = (function (data, requestAgent) {
       method: 'POST',
       uri: uri,
       body: this.data.credentials
-    }).then((function (response) {
+    });
+  };
+
+  Passport.prototype.fetchTokenHTTP2 = function (uri) {
+    var payload = JSON.stringify(this.data.credentials);
+    var host = (this.data.issuer.uri.indexOf('https://') === 0) ? this.data.issuer.uri.substring(8) : this.data.issuer.uri;
+
+    var options = {
+      host: host,
+      port: this.data.issuer.port || 443,
+      path: this.data.issuer.endpoint || '/token',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': payload.length
+      }
+    };
+
+    if (this.data.ca) {
+      options.ca = this.data.ca;
+    }
+
+    return new Promise(function (resolve, reject) {
+      var response = '';
+
+      var req = http2.request(options, function (res) {
+        res.on('data', function (chunk) {
+          response += chunk.toString();
+        });
+
+        res.on('end', function () {
+          try {
+            var parsedResponse = JSON.parse(response);
+
+            resolve(parsedResponse);
+          } catch (err) {
+            reject(err);
+          }
+        });
+      });
+
+      req.write(payload);
+      req.end();
+    });
+  };
+
+  Passport.prototype.requestToken = function () {
+    var fetchMethod = this.data.http2 ? this.fetchTokenHTTP2.bind(this) : this.fetchTokenHTTP1.bind(this);
+
+    return fetchMethod().then((function (response) {
       if (this.wallet) {
         this.wallet.write(response);
       }
