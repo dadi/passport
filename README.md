@@ -1,7 +1,5 @@
 # DADI Passport
 
-![Build Status](http://img.shields.io/badge/Release-0.1_Beta-green.svg?style=flat-square)&nbsp;![Coverage](https://img.shields.io/badge/Coverage-0%-yellow.svg?style=flat-square)
-
 ## Overview
 
 DADI Passport is a library for generating access tokens to authenticate with DADI platform components.
@@ -12,7 +10,7 @@ This library can be used by third-party applications that wish to integrate with
 
 ## Documentation
 
-Documentation is maintained under the `docs` branch and can be found on the [dadi.tech](https://dadi.tech) site.
+Documentation is maintained under the `docs` branch.
 
 ## Licence
 

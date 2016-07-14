@@ -11,12 +11,15 @@
     "body-parser": "^1.15.0",
     "env-test": "^1.0.0",
     "express": "^4.13.4",
+    "istanbul": "^0.4.4",
+    "istanbul-cobertura-badger": "^1.2.1",
     "mocha": "latest",
     "request": "^2.69.0",
     "should": "latest"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "env NODE_ENV=test ./node_modules/.bin/istanbul cover --report cobertura --report text --report html --report lcov ./node_modules/.bin/_mocha test",
+    "posttest": "./scripts/coverage.js"
   },
   "repository": {
     "type": "git",
