@@ -264,12 +264,15 @@ describe('Token wallets', function (done) {
         path: tokenWalletPath
       }
     }).then(function (bearerToken) {
-      var walletContents = JSON.parse(fs.readFileSync(tokenWalletPath, 'utf8'));
+      setTimeout(function() {
+        var walletContents = JSON.parse(fs.readFileSync(tokenWalletPath, 'utf8'));
 
-      walletContents.accessToken.should.equal(bearerToken);
-      walletContents.expirationDate.should.equal(now + settings.expiresIn);
+        walletContents.accessToken.should.equal(bearerToken);
+        walletContents.expirationDate.should.equal(now + settings.expiresIn);
 
-      done();
+        done();
+
+      }, 1000)
     });
   });
 });

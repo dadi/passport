@@ -7,9 +7,8 @@ var FileWallet = function (options) {
 }
 
 FileWallet.prototype.read = function () {
-  var rawContent = fs.readFileSync(this.path, 'utf8')
-  
   try {
+    var rawContent = fs.readFileSync(this.path, 'utf8')
     var parsedContent = JSON.parse(rawContent)
 
     return parsedContent

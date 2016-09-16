@@ -1,6 +1,6 @@
 # DADI Passport
 
-[![npm (scoped)](https://img.shields.io/npm/v/@dadi/passport.svg?maxAge=10800&style=flat-square)](https://www.npmjs.com/package/@dadi/passport)&nbsp;[![coverage](https://img.shields.io/badge/coverage-60%25-yellow.svg?style=flat-square)](https://github.com/dadi/passport)&nbsp;[![build](http://ci.dadi.technology/dadi/passport/badge?branch=master&service=shield)](http://ci.dadi.technology/dadi/passport)
+[![npm (scoped)](https://img.shields.io/npm/v/@dadi/passport.svg?maxAge=10800&style=flat-square)](https://www.npmjs.com/package/@dadi/passport)&nbsp;[![coverage](https://img.shields.io/badge/coverage-62%25-yellow.svg?style=flat-square)](https://github.com/dadi/passport)&nbsp;[![build](http://ci.dadi.technology/dadi/passport/badge?branch=master&service=shield)](http://ci.dadi.technology/dadi/passport)
 
 ## Overview
 
