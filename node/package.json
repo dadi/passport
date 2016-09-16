@@ -1,6 +1,6 @@
 {
   "name": "@dadi/passport",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A library for generating access tokens to authenticate with DADI platform components",
   "main": "src/index.js",
   "dependencies": {
