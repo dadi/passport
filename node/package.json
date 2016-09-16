@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "dependencies": {
     "http2": "^3.3.2",
+    "mkdirp": "^0.5.1",
     "request-promise": "^2.0.0"
   },
   "devDependencies": {
