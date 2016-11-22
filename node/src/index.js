@@ -3,6 +3,8 @@
 const http2 = require('http2')
 const request = require('request-promise')
 
+let instance
+
 const Passport = function (data, requestAgent) {
   this.data = data
   this.requestAgent = requestAgent
@@ -81,11 +83,13 @@ Passport.prototype.requestToken = function () {
   const fetchMethod = this.data.http2 ? this.fetchTokenHTTP2.bind(this) : this.fetchTokenHTTP1.bind(this)
 
   return fetchMethod().then(response => {
+    let queue = []
+
     if (this.wallet) {
-      this.wallet.write(response)
+      queue.push(this.wallet.write(response))
     }
 
-    return Promise.resolve(this.return(response.accessToken))
+    return Promise.all(queue).then(() => this.return(response.accessToken))
   }).catch(errorData => {
     return Promise.reject(this.createErrorObject(errorData))
   })
@@ -93,7 +97,7 @@ Passport.prototype.requestToken = function () {
 
 Passport.prototype.return = function (token) {
   if (typeof this.requestAgent === 'function') {
-    return (() => {
+    return (function () {
       let requestOptions = {}
 
       if (typeof arguments[0] === 'string') {
@@ -119,14 +123,14 @@ Passport.prototype.return = function (token) {
       arguments[0] = requestOptions
 
       return this.requestAgent.apply(this, arguments)
-    })
+    }).bind(this)
   } else {
     return token
   }
 }
 
-Passport.prototype.get = function () {
-  if (!this.walletModule) {
+Passport.prototype.get = function (refresh) {
+  if (!this.walletModule || refresh) {
     return this.requestToken()
   }
 
@@ -168,5 +172,15 @@ Passport.prototype.createErrorObject = function (errorData) {
 module.exports = ((data, requestAgent) => {
   const passport = new Passport(data, requestAgent)
 
+  instance = passport
+
   return passport.get()
 })
+
+module.exports.refreshToken = () => {
+  if (typeof instance === 'undefined') {
+    throw 'Passport was not initialised'
+  }
+
+  return instance.get(true)
+}
