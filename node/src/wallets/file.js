@@ -1,15 +1,17 @@
-var fs = require('fs')
-var mkdirp = require('mkdirp')
-var path = require('path')
+'use strict'
 
-var FileWallet = function (options) {
+const fs = require('fs')
+const mkdirp = require('mkdirp')
+const path = require('path')
+
+const FileWallet = function (options) {
   this.path = path.resolve(options.path)
 }
 
 FileWallet.prototype.read = function () {
   try {
-    var rawContent = fs.readFileSync(this.path, 'utf8')
-    var parsedContent = JSON.parse(rawContent)
+    const rawContent = fs.readFileSync(this.path, 'utf8')
+    const parsedContent = JSON.parse(rawContent)
 
     return parsedContent
   } catch (e) {
@@ -18,13 +20,17 @@ FileWallet.prototype.read = function () {
 }
 
 FileWallet.prototype.write = function (data) {
-  var content = {
-    accessToken: data.accessToken,
-    expirationDate: Math.floor(Date.now() / 1000) + data.expiresIn
-  }
+  return new Promise((resolve, reject) => {
+    const content = {
+      accessToken: data.accessToken,
+      expirationDate: Math.floor(Date.now() / 1000) + data.expiresIn
+    }
 
-  mkdirp(path.dirname(this.path), (err) => {
-    fs.writeFileSync(this.path, JSON.stringify(content), 'utf8')
+    mkdirp(path.dirname(this.path), err => {
+      fs.writeFile(this.path, JSON.stringify(content), err => {
+        return resolve()
+      })
+    })
   })
 }
 
