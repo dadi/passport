@@ -1,4 +1,7 @@
 language: node_js
+env:
+  - TEST_DIR=node
+script: cd $TEST_DIR && npm install && npm test
 cache:
   directories:
     - node_modules
