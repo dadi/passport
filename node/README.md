@@ -1,6 +1,7 @@
 # DADI Passport
 
-[![npm (scoped)](https://img.shields.io/npm/v/@dadi/passport.svg?maxAge=10800&style=flat-square)](https://www.npmjs.com/package/@dadi/passport)&nbsp;[![coverage](https://img.shields.io/badge/coverage-62%25-yellow.svg?style=flat-square)](https://github.com/dadi/passport)&nbsp;[![build](http://ci.dadi.technology/dadi/passport/badge?branch=master&service=shield)](http://ci.dadi.technology/dadi/passport)
+[![npm (scoped)](https://img.shields.io/npm/v/@dadi/passport.svg?maxAge=10800&style=flat-square)](https://www.npmjs.com/package/@dadi/passport)&nbsp;[![coverage](https://img.shields.io/badge/coverage-62%25-yellow.svg?style=flat-square)](https://github.com/dadi/passport)&nbsp;
+[![Build Status](https://travis-ci.org/dadi/passport.svg?branch=master)](https://travis-ci.org/dadi/passport)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square)](https://github.com/semantic-release/semantic-release)
 
 ## Overview
