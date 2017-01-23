@@ -1,7 +1,4 @@
 language: node_js
-env:
-  - TEST_DIR=node
-script: cd $TEST_DIR && npm install && npm test
 cache:
   directories:
     - node_modules
@@ -18,4 +15,6 @@ after_success:
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
-before_install: if [[ `npm -v` != 3* ]]; then npm i -g npm@latest; fi
+before_install:
+  - cd node
+  - if [[ `npm -v` != 3* ]]; then npm i -g npm@latest; fi
