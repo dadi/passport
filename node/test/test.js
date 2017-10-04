@@ -1,17 +1,18 @@
-var fs = require('fs')
-var should = require('should')
-var sinon = require('sinon')
+'use strict'
 
-var Passport = require(__dirname + '/../src')
-var server = require('./server')
-var serverInstance
+const fs = require('fs')
+const should = require('should')
+const sinon = require('sinon')
+
+const Passport = require(__dirname + '/../src')
+const server = require('./server')
 
 // --------------------------------------------------------------
 // Configuration
 // --------------------------------------------------------------
 
-var tokenWalletPath = __dirname + '/token.json'
-var settings = {
+const tokenWalletPath = __dirname + '/token.json'
+const settings = {
   expiresIn: 5,
   clientId: 'johndoe',
   port: 3030,
@@ -131,7 +132,7 @@ describe('DADI Passport', function (done) {
     it('should return the stored bearer token if it is still valid', function (done) {
       this.timeout(5000)
 
-      var mockPayload = {
+      const mockPayload = {
         accessToken: '9999-8888-7777-6666',
         expirationDate: Date.now() + 1
       }
@@ -166,7 +167,7 @@ describe('DADI Passport', function (done) {
     it('should return a refreshed bearer token if the stored one has expired', function (done) {
       this.timeout(5000)
 
-      var mockPayload = {
+      const mockPayload = {
         accessToken: '9999-8888-7777-6666',
         expirationDate: Math.floor(Date.now() / 1000) - 1
       }
@@ -201,7 +202,7 @@ describe('DADI Passport', function (done) {
     it('should return a refreshed bearer token if the `forceTokenRefresh` property is set', function (done) {
       this.timeout(9000)
 
-      var mockPayload = {
+      const mockPayload = {
         accessToken: '9999-8888-7777-6666',
         expirationDate: Date.now() + 1
       }
@@ -237,7 +238,7 @@ describe('DADI Passport', function (done) {
 
   describe('Token wallets', function (done) {
     it('should store a newly requested token in a wallet file', function (done) {
-      var now = Math.floor(Date.now() / 1000)
+      const now = Math.floor(Date.now() / 1000)
 
       Passport({
         issuer: {
@@ -269,7 +270,7 @@ describe('DADI Passport', function (done) {
 
   describe('Request injection', function (done) {
     it('should inject valid authorisation headers in a request agent', function (done) {
-      var request = require('request')
+      const request = require('request')
 
       Passport({
         issuer: {
@@ -287,7 +288,7 @@ describe('DADI Passport', function (done) {
         }
       }, request).then(function (request) {
         request('http://localhost:' + settings.port + '/headers', function (err, res, body) {
-          var parsedBody = JSON.parse(body)
+          const parsedBody = JSON.parse(body)
 
           parsedBody.authorization.should.equal('Bearer ' + settings.tokens[0])
 

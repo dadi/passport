@@ -1,12 +1,15 @@
-var bodyParser = require('body-parser')
-var express = require('express')
-var fs = require('fs')
+'use strict'
 
-var server = express()
-var settings = {}
-var ttlTimeout
-var instance
-var instanceTokenCount = 0
+const bodyParser = require('body-parser')
+const express = require('express')
+const fs = require('fs')
+
+const server = express()
+
+let settings = {}
+let ttlTimeout
+let instance
+let instanceTokenCount = 0
 
 server.use(bodyParser.json())
  
