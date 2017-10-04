@@ -1,32 +1,34 @@
-var fs = require('fs');
-var should = require('should');
+var fs = require('fs')
+var should = require('should')
+var sinon = require('sinon')
 
-var Passport = require(__dirname + '/../src');
-var server = require('./server');
-var serverInstance;
+var Passport = require(__dirname + '/../src')
+var server = require('./server')
+var serverInstance
 
 // --------------------------------------------------------------
 // Configuration
 // --------------------------------------------------------------
 
-var serverPort = 3030;
-var tokenWalletPath = __dirname + '/token.json';
+var tokenWalletPath = __dirname + '/token.json'
+var settings = {
+  expiresIn: 5,
+  clientId: 'johndoe',
+  port: 3030,
+  secret: 'f00b4r',
+  tokens: [
+    '1111-2222-3333',
+    '2222-3333-4444'
+  ]
+}
 
 // --------------------------------------------------------------
 // Helpers
 // --------------------------------------------------------------
 
-function startServer() {
-  serverInstance = server.listen(serverPort);
-}
-
-function stopServer() {
-  serverInstance.close();
-}
-
 function deleteWallet() {
   try {
-    fs.unlinkSync(tokenWalletPath);
+    fs.unlinkSync(tokenWalletPath)
   } catch (e) {}
 }
 
@@ -34,133 +36,33 @@ function deleteWallet() {
 // Tests
 // --------------------------------------------------------------
 
-describe('Generating tokens', function (done) {
-
+describe('DADI Passport', function (done) {
   before(function (done) {
-    startServer();
+    server.start(settings)
 
-    deleteWallet();
+    done()
+  })
 
-    done();
-  });
+  beforeEach(function (done) {
+    deleteWallet()
 
-  afterEach(function (done) {
-    deleteWallet();
+    server.reset()
 
-    done();
-  });
+    done()
+  })
 
   after(function (done) {
-    stopServer();
+    server.stop()
 
-    done();
-  });
+    done()
+  })
 
-  it('should return a valid bearer token when using valid credentials', function (done) {
-    var settings = {
-      accessToken: '1111-2222-3333',
-      expiresIn: 5,
-      clientId: 'johndoe',
-      secret: 'f00b4r'
-    };
-
-    server.useSettings(settings);
-
-    Passport({
-      issuer: {
-        uri: 'http://localhost',
-        port: serverPort,
-        endpoint: '/token'
-      },
-      credentials: {
-        clientId: settings.clientId,
-        secret: settings.secret
-      },
-      wallet: 'file',
-      walletOptions: {
-        path: tokenWalletPath
-      }
-    }).then(function (bearerToken) {
-      bearerToken.should.equal(settings.accessToken);
-
-      done();
-    });
-  });
-
-  it('should return an error object when using invalid credentials', function (done) {
-    var settings = {
-      accessToken: '1111-2222-3333',
-      expiresIn: 5,
-      clientId: 'johndoe',
-      secret: 'f00b4r'
-    };
-
-    server.useSettings(settings);
-
-    Passport({
-      issuer: {
-        uri: 'http://localhost',
-        port: serverPort,
-        endpoint: '/token'
-      },
-      credentials: {
-        clientId: 'wrongClient',
-        secret: 'badSecret'
-      },
-      wallet: 'file',
-      walletOptions: {
-        path: tokenWalletPath
-      }
-    }).catch(function (err) {
-      err.status.should.equal('Unauthorized');
-      err.title.should.equal('Credentials not found or invalid');
-      err.code.should.equal(401);
-
-      done();
-    });
-  });
-
-  it('should return an error object when requesting from an invalid issuer', function (done) {
-    Passport({
-      issuer: {
-        uri: 'http://lolcathost',
-        port: serverPort,
-        endpoint: '/token'
-      },
-      credentials: {
-        clientId: 'someClient',
-        secret: 'someSecret'
-      },
-      wallet: 'file',
-      walletOptions: {
-        path: tokenWalletPath
-      }
-    }).catch(function (err) {
-      err.status.should.equal('Not found');
-      err.title.should.equal('URL not found');
-      err.code.should.equal(404);
-
-      done();
-    });
-  });
-
-  it('should return the stored bearer token if it is still valid', function (done) {
-    this.timeout(5000);
-
-    var settings = {
-      accessToken: '1111-2222-3333',
-      expiresIn: 5,
-      clientId: 'johndoe',
-      secret: 'f00b4r'
-    };
-
-    server.useSettings(settings);
-
-    setTimeout(function () {
+  describe('Generating tokens', function (done) {
+    it('should return a valid bearer token when using valid credentials', function (done) {
       Passport({
         issuer: {
           uri: 'http://localhost',
-          port: serverPort,
+          port: settings.port,
           endpoint: '/token'
         },
         credentials: {
@@ -172,31 +74,175 @@ describe('Generating tokens', function (done) {
           path: tokenWalletPath
         }
       }).then(function (bearerToken) {
-        bearerToken.should.equal(settings.accessToken);
+        bearerToken.should.equal(settings.tokens[0])
 
-        done();
-      });
-    }, 2000);
-  });
+        done()
+      })
+    })
 
-  it('should return a refreshed bearer token if the stored one has expired', function (done) {
-    this.timeout(9000);
-
-    var settings = {
-      accessToken: '1111-2222-3333',
-      nextAccessToken: '2222-3333-4444',
-      expiresIn: 5,
-      clientId: 'johndoe',
-      secret: 'f00b4r'
-    };
-
-    server.useSettings(settings);
-
-    setTimeout(function () {
+    it('should return an error object when using invalid credentials', function (done) {
       Passport({
         issuer: {
           uri: 'http://localhost',
-          port: serverPort,
+          port: settings.port,
+          endpoint: '/token'
+        },
+        credentials: {
+          clientId: 'wrongClient',
+          secret: 'badSecret'
+        },
+        wallet: 'file',
+        walletOptions: {
+          path: tokenWalletPath
+        }
+      }).catch(function (err) {
+        err.status.should.equal('Unauthorized')
+        err.title.should.equal('Credentials not found or invalid')
+        err.code.should.equal(401)
+
+        done()
+      })
+    })
+
+    it('should return an error object when requesting from an invalid issuer', function (done) {
+      Passport({
+        issuer: {
+          uri: 'http://lolcathost',
+          port: settings.port,
+          endpoint: '/token'
+        },
+        credentials: {
+          clientId: 'someClient',
+          secret: 'someSecret'
+        },
+        wallet: 'file',
+        walletOptions: {
+          path: tokenWalletPath
+        }
+      }).catch(function (err) {
+        err.status.should.equal('Not found')
+        err.title.should.equal('URL not found')
+        err.code.should.equal(404)
+
+        done()
+      })
+    })
+
+    it('should return the stored bearer token if it is still valid', function (done) {
+      this.timeout(5000)
+
+      var mockPayload = {
+        accessToken: '9999-8888-7777-6666',
+        expirationDate: Date.now() + 1
+      }
+
+      sinon.stub(fs, 'readFile').yields(null, JSON.stringify(mockPayload))
+
+      setTimeout(function () {
+        Passport({
+          issuer: {
+            uri: 'http://localhost',
+            port: settings.port,
+            endpoint: '/token'
+          },
+          credentials: {
+            clientId: settings.clientId,
+            secret: settings.secret
+          },
+          wallet: 'file',
+          walletOptions: {
+            path: tokenWalletPath
+          }
+        }).then(function (bearerToken) {
+          bearerToken.should.equal(mockPayload.accessToken)
+
+          fs.readFile.restore()
+
+          done()
+        })
+      }, 2000)
+    })
+
+    it('should return a refreshed bearer token if the stored one has expired', function (done) {
+      this.timeout(5000)
+
+      var mockPayload = {
+        accessToken: '9999-8888-7777-6666',
+        expirationDate: Math.floor(Date.now() / 1000) - 1
+      }
+
+      sinon.stub(fs, 'readFile').yields(null, JSON.stringify(mockPayload))
+
+      setTimeout(function () {
+        Passport({
+          issuer: {
+            uri: 'http://localhost',
+            port: settings.port,
+            endpoint: '/token'
+          },
+          credentials: {
+            clientId: settings.clientId,
+            secret: settings.secret
+          },
+          wallet: 'file',
+          walletOptions: {
+            path: tokenWalletPath
+          }
+        }).then(function (bearerToken) {
+          bearerToken.should.equal(settings.tokens[0])
+
+          fs.readFile.restore()
+
+          done()
+        })
+      }, 2000)
+    })
+
+    it('should return a refreshed bearer token if the `forceTokenRefresh` property is set', function (done) {
+      this.timeout(9000)
+
+      var mockPayload = {
+        accessToken: '9999-8888-7777-6666',
+        expirationDate: Date.now() + 1
+      }
+
+      sinon.stub(fs, 'readFile').yields(null, JSON.stringify(mockPayload))
+
+      setTimeout(function () {
+        Passport({
+          forceTokenRefresh: true,
+          issuer: {
+            uri: 'http://localhost',
+            port: settings.port,
+            endpoint: '/token'
+          },
+          credentials: {
+            clientId: settings.clientId,
+            secret: settings.secret
+          },
+          wallet: 'file',
+          walletOptions: {
+            path: tokenWalletPath
+          }
+        }).then(function (bearerToken) {
+          bearerToken.should.equal(settings.tokens[0])
+
+          fs.readFile.restore()
+
+          done()
+        })
+      }, 2000)
+    })
+  })
+
+  describe('Token wallets', function (done) {
+    it('should store a newly requested token in a wallet file', function (done) {
+      var now = Math.floor(Date.now() / 1000)
+
+      Passport({
+        issuer: {
+          uri: 'http://localhost',
+          port: settings.port,
           endpoint: '/token'
         },
         credentials: {
@@ -208,131 +254,46 @@ describe('Generating tokens', function (done) {
           path: tokenWalletPath
         }
       }).then(function (bearerToken) {
-        bearerToken.should.equal(settings.nextAccessToken);
+        setTimeout(function() {
+          var walletContents = JSON.parse(fs.readFileSync(tokenWalletPath, 'utf8'))
 
-        done();
-      });
-    }, 6000);
-  });
-});
+          walletContents.accessToken.should.equal(bearerToken)
+          walletContents.expirationDate.should.equal(now + settings.expiresIn)
 
-describe('Token wallets', function (done) {
+          done()
 
-  before(function (done) {
-    startServer();
+        }, 1000)
+      })
+    })
+  })
 
-    deleteWallet();
+  describe('Request injection', function (done) {
+    it('should inject valid authorisation headers in a request agent', function (done) {
+      var request = require('request')
 
-    done();
-  });
+      Passport({
+        issuer: {
+          uri: 'http://localhost',
+          port: settings.port,
+          endpoint: '/token'
+        },
+        credentials: {
+          clientId: settings.clientId,
+          secret: settings.secret
+        },
+        wallet: 'file',
+        walletOptions: {
+          path: tokenWalletPath
+        }
+      }, request).then(function (request) {
+        request('http://localhost:' + settings.port + '/headers', function (err, res, body) {
+          var parsedBody = JSON.parse(body)
 
-  afterEach(function (done) {
-    deleteWallet();
+          parsedBody.authorization.should.equal('Bearer ' + settings.tokens[0])
 
-    done();
-  });
-
-  after(function (done) {
-    stopServer();
-
-    done();
-  });
-
-  it('should store a newly requested token in a wallet file', function (done) {
-    var now = Math.floor(Date.now() / 1000);
-    var settings = {
-      accessToken: '1111-2222-3333',
-      expiresIn: 5,
-      clientId: 'johndoe',
-      secret: 'f00b4r'
-    };
-
-    server.useSettings(settings);
-
-    Passport({
-      issuer: {
-        uri: 'http://localhost',
-        port: serverPort,
-        endpoint: '/token'
-      },
-      credentials: {
-        clientId: settings.clientId,
-        secret: settings.secret
-      },
-      wallet: 'file',
-      walletOptions: {
-        path: tokenWalletPath
-      }
-    }).then(function (bearerToken) {
-      setTimeout(function() {
-        var walletContents = JSON.parse(fs.readFileSync(tokenWalletPath, 'utf8'));
-
-        walletContents.accessToken.should.equal(bearerToken);
-        walletContents.expirationDate.should.equal(now + settings.expiresIn);
-
-        done();
-
-      }, 1000)
-    });
-  });
-});
-
-describe('Request injection', function (done) {
-
-  before(function (done) {
-    startServer();
-
-    deleteWallet();
-
-    done();
-  });
-
-  afterEach(function (done) {
-    deleteWallet();
-
-    done();
-  });
-
-  after(function (done) {
-    stopServer();
-
-    done();
-  });
-
-  it('should inject valid authorisation headers in a request agent', function (done) {
-    var settings = {
-      accessToken: '1111-2222-3333',
-      expiresIn: 5,
-      clientId: 'johndoe',
-      secret: 'f00b4r'
-    };
-
-    server.useSettings(settings);
-
-    var request = require('request');
-
-    Passport({
-      issuer: {
-        uri: 'http://localhost',
-        port: serverPort,
-        endpoint: '/token'
-      },
-      credentials: {
-        clientId: settings.clientId,
-        secret: settings.secret
-      },
-      wallet: 'file',
-      walletOptions: {
-        path: tokenWalletPath
-      }
-    }, request).then(function (request) {
-      request('http://localhost:' + serverPort + '/headers', function (err, res, body) {
-        var parsedBody = JSON.parse(body);
-
-        parsedBody.authorization.should.equal('Bearer ' + settings.accessToken);
-
-        done();
-      });
-    });
-  });
-});
+          done()
+        })
+      })
+    })
+  })
+})

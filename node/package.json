@@ -16,8 +16,9 @@
     "istanbul-cobertura-badger": "^1.2.1",
     "mocha": "latest",
     "request": "^2.69.0",
+    "semantic-release": "^6.3.2",
     "should": "latest",
-    "semantic-release": "^6.3.2"
+    "sinon": "^4.0.1"
   },
   "scripts": {
     "test": "env NODE_ENV=test ./node_modules/.bin/istanbul cover --report cobertura --report text --report html --report lcov ./node_modules/.bin/_mocha test",
