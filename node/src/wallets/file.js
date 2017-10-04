@@ -9,14 +9,19 @@ const FileWallet = function (options) {
 }
 
 FileWallet.prototype.read = function () {
-  try {
-    const rawContent = fs.readFileSync(this.path, 'utf8')
-    const parsedContent = JSON.parse(rawContent)
+  return new Promise((resolve, reject) => {
+    fs.readFile(this.path, 'utf8', (err, data) => {
+      if (err) return reject(err)
 
-    return parsedContent
-  } catch (e) {
-    return false
-  }
+      try {
+        const payload = JSON.parse(data)
+
+        return resolve(payload)
+      } catch (err) {
+        return reject(err)
+      }
+    })
+  }).catch(err => Promise.resolve(false))
 }
 
 FileWallet.prototype.write = function (data) {

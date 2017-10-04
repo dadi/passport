@@ -130,25 +130,28 @@ Passport.prototype.return = function (token) {
 }
 
 Passport.prototype.get = function (refresh) {
-  if (!this.walletModule || refresh) {
+  if (!this.walletModule) {
     return this.requestToken()
   }
 
   const Wallet = this.walletModule
   this.wallet = new Wallet(this.data.walletOptions)
 
-  try {
-    const token = this.wallet.read()
-    const currentDate = Math.floor(Date.now() / 1000)
+  if (refresh) {
+    return this.requestToken()
+  }
+
+  const currentDate = Math.floor(Date.now() / 1000)
+
+  return this.wallet.read().then(token => {
+    if (!token) return this.requestToken()
 
     if (token.expirationDate > currentDate) {
-      return Promise.resolve(this.return(token.accessToken))
+      return this.return(token.accessToken)
     } else {
       return this.requestToken()
     }
-  } catch (e) {
-    return this.requestToken()
-  }
+  })
 }
 
 Passport.prototype.createErrorObject = function (errorData) {
@@ -174,7 +177,7 @@ module.exports = ((data, requestAgent) => {
 
   instance = passport
 
-  return passport.get()
+  return passport.get(data.forceTokenRefresh === true)
 })
 
 module.exports.refreshToken = () => {

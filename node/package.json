@@ -9,15 +9,16 @@
     "request-promise": "^2.0.0"
   },
   "devDependencies": {
-    "body-parser": "^1.15.0",
-    "env-test": "^1.0.0",
-    "express": "^4.13.4",
-    "istanbul": "^0.4.4",
-    "istanbul-cobertura-badger": "^1.2.1",
+    "body-parser": "~1.15.0",
+    "env-test": "~1.0.0",
+    "express": "~4.13.4",
+    "istanbul": "~0.4.4",
+    "istanbul-cobertura-badger": "~1.2.1",
     "mocha": "latest",
-    "request": "^2.69.0",
+    "request": "~2.69.0",
+    "semantic-release": "~6.3.2",
     "should": "latest",
-    "semantic-release": "^6.3.2"
+    "sinon": "~4.0.1"
   },
   "scripts": {
     "test": "env NODE_ENV=test ./node_modules/.bin/istanbul cover --report cobertura --report text --report html --report lcov ./node_modules/.bin/_mocha test",
