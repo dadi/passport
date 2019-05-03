@@ -20,7 +20,7 @@
     "sinon": "~4.0.1"
   },
   "scripts": {
-    "test": "env NODE_ENV=test ./node_modules/.bin/nyc --reporter=lcov ./node_modules/mocha/bin/_mocha test && ./node_modules/.bin/nyc report",
+    "test": "env NODE_ENV=test ./node_modules/.bin/nyc --reporter=lcov ./node_modules/.bin/mocha test && ./node_modules/.bin/nyc report",
     "posttest": "./scripts/coverage.js"
   },
   "repository": {
