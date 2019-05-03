@@ -10,20 +10,18 @@
   },
   "devDependencies": {
     "body-parser": "~1.15.0",
+    "coveralls": "^3.0.3",
     "env-test": "~1.0.0",
     "express": "~4.13.4",
-    "istanbul": "~0.4.4",
-    "istanbul-cobertura-badger": "~1.2.1",
     "mocha": "latest",
+    "nyc": "^14.1.0",
     "request": "~2.69.0",
-    "semantic-release": "~6.0.0",
     "should": "latest",
     "sinon": "~4.0.1"
   },
   "scripts": {
-    "test": "env NODE_ENV=test ./node_modules/.bin/istanbul cover --report cobertura --report text --report html --report lcov ./node_modules/.bin/_mocha test",
-    "posttest": "./scripts/coverage.js",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "test": "env NODE_ENV=test ./node_modules/.bin/nyc --reporter=lcov ./node_modules/mocha/bin/_mocha test && ./node_modules/.bin/nyc report",
+    "posttest": "./scripts/coverage.js"
   },
   "repository": {
     "type": "git",

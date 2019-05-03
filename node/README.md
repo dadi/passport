@@ -1,8 +1,7 @@
 # DADI Passport
 
-[![npm (scoped)](https://img.shields.io/npm/v/@dadi/passport.svg?maxAge=10800&style=flat-square)](https://www.npmjs.com/package/@dadi/passport)&nbsp;[![coverage](https://img.shields.io/badge/coverage-66%25-yellow.svg?style=flat?style=flat-square)](https://github.com/dadi/passport)&nbsp;
+[![npm (scoped)](https://img.shields.io/npm/v/@dadi/passport.svg?maxAge=10800&style=flat-square)](https://www.npmjs.com/package/@dadi/passport)&nbsp;[![Coverage Status](https://coveralls.io/repos/github/dadi/passport/badge.svg?branch=master)](https://coveralls.io/github/dadi/passport?branch=master)&nbsp;
 [![Build Status](https://travis-ci.org/dadi/passport.svg?branch=master)](https://travis-ci.org/dadi/passport)
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square)](https://github.com/semantic-release/semantic-release)
 
 ## Overview
 
@@ -29,7 +28,7 @@ Documentation is maintained under the `docs` branch.
 DADI is a data centric development and delivery stack, built specifically in support of the principles of API first and COPE.
 
 Copyright notice<br />
-(C) 2016 DADI+ Limited <support@dadi.tech><br />
+(C) 2019 DADI+ Limited <support@dadi.tech><br />
 All rights reserved
 
 This product is part of DADI.<br />

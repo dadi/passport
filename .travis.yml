@@ -5,16 +5,13 @@ cache:
 notifications:
   email: false
 node_js:
-  - '6'
-  - '5'
-  - '4'
+  - '8'
+  - '10'
+  - 'lts/*'
 before_script:
   - npm prune
-after_success:
-  - npm run semantic-release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
 before_install:
   - cd node
-  - if [[ `npm -v` != 3* ]]; then npm i -g npm@latest; fi
